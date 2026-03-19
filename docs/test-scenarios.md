@@ -18,3 +18,21 @@ User Action
 Expected Result
 - 버튼 클릭이 정상 동작한다
 - 다음 페이지 또는 결과가 출력된다
+
+expect 완전 이해 (중요)
+정의
+expect = “검증 도구”
+구조
+await expect(대상).조건
+예시 1
+await expect(page).toHaveURL(/inventory/)
+
+👉 의미:
+
+URL이 inventory 포함하면 성공
+예시 2
+await expect(page.getByText('Products')).toBeVisible();
+
+👉 의미:
+
+Products 텍스트가 화면에 보여야 한다

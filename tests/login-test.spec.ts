@@ -9,6 +9,6 @@ test('로그인 테스트', async ({ page }) => {
 
   await page.getByRole('button', { name: 'Login' }).click();
 
-  await expect(page).toHaveURL(/inventory/);
+  await expect(page.getByText('Products')).toBeVisible();
 
 });
