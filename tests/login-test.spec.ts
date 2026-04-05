@@ -1,27 +1,21 @@
 import { test, expect } from '@playwright/test';
+import { LoginPage } from '../pages/loginPage';
 
-test.beforeEach(async ({ page }) => {
-  await page.goto('https://www.saucedemo.com');
-});
+test('로그인성공', async ({ page }) => {
+  const loginPage = new LoginPage(page);
 
-// 테스트 1: 성공 로그인
-test('성공 로그인', async ({ page }) => {
-  await page.getByPlaceholder('Username').fill('standard_user');
-  await page.getByPlaceholder('Password').fill('secret_sauce');
-  await page.getByRole('button', { name: 'Login' }).click();
+  await loginPage.goto();
+  await loginPage.login('standard_user', 'secret_sauce');
 
-  // 검증 1: URL 확인
-  await expect(page).toHaveURL('https://www.saucedemo.com/inventory.html');
-
-  // 검증 2: 화면 요소 확인
   await expect(page.getByText('Products')).toBeVisible();
 });
 
-// 테스트 2: 실패 로그인
-test('실패 로그인', async ({ page }) => {
-  await page.getByPlaceholder('Username').fill('wrong');
-  await page.getByPlaceholder('Password').fill('wrong');
-  await page.getByRole('button', { name: 'Login' }).click();
+test('로그인 실패', async ({ page }) => {
+  const loginPage = new LoginPage(page);
 
-  await expect(page.getByText('Epic sadface')).toBeVisible();
+  await loginPage.goto();
+  await loginPage.login('wrong_user', 'wrong_pass');
+
+  await expect(loginPage.getErrorMessage()).toBeVisible();
+
 });
